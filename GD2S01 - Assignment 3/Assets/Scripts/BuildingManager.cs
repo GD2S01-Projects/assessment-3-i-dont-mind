@@ -1,0 +1,114 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+[System.Serializable]
+public struct BuildingOption
+{
+    public string name;
+    public Sprite icon;
+    public int cost;
+
+    public GameObject prefab;
+}
+
+public class BuildingManager : MonoBehaviour
+{
+    public static BuildingManager Instance;
+
+    public BuildingOption[] buildings;
+    public int selectedBuilding;
+
+    [Header("UI")]
+    public GameObject buildingSelectionPrefab;
+    public Transform buildingSelectionTransform;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        CreateUI();
+    }
+
+    private void Update()
+    {
+        //Only Place Buildings If The Mouse Pointer is Not Over UI Elements
+        if(Input.GetMouseButtonDown(0) && !IsPointerOverUIElement())
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+            Physics.Raycast(ray, out hit, Mathf.Infinity);
+
+            if(hit.transform != null)
+            {
+                PlaceBuilding(buildings[selectedBuilding], hit.point);
+            }
+        }
+    }
+
+    //Placed Building At A Position And Debugs To The Screen
+    public void PlaceBuilding(BuildingOption _building, Vector3 _position)
+    {
+        GameObject cur = Instantiate(_building.prefab, _position, Quaternion.identity);
+
+        OnScreenDebugger.DebugMessage($"Placed New Building At Position {_position}");
+    }
+
+
+    public void SetSelectedBuildingOption(int _option)
+    {
+        selectedBuilding = _option;
+    }
+
+    public void CreateUI()
+    {
+        //Clear Previous UI
+        for (int i = 0; i < buildingSelectionTransform.childCount; i++)
+        {
+            Destroy(buildingSelectionTransform.GetChild(i).gameObject);
+        }
+
+        //Then Create The New UI
+        for (int i = 0; i < buildings.Length; i++)
+        {
+            GameObject cur = Instantiate(buildingSelectionPrefab, buildingSelectionTransform);
+
+            cur.GetComponent<BuildingSelection>()?.Initialize(buildings[i], i);
+        }
+    }
+
+    public bool IsPointerOverUIElement()
+    {
+        return IsPointerOverUIElement(GetEventSystemRaycastResults());
+    }
+
+    private bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults)
+    {
+        for (int index = 0; index < eventSystemRaysastResults.Count; ++index)
+        {
+            RaycastResult curRaysastResult = eventSystemRaysastResults[index];
+
+            //5 is the UI Layer
+            if (curRaysastResult.gameObject.layer == 5)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    static List<RaycastResult> GetEventSystemRaycastResults()
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = Input.mousePosition;
+
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, raycastResults);
+        return raycastResults;
+    }
+}

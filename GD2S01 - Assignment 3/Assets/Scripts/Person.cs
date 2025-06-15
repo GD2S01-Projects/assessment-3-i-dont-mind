@@ -171,9 +171,9 @@ public class Inmate : PersonDecorator
     {
         return hasContraband;
     }
-    public void SetHasContraband(bool _hasContraband)
+    public void SetHasContraband()
     {
-        hasContraband = _hasContraband;
+        hasContraband = Random.Range(0f, 100f) < 10f;
     }
 
     public int GetContrabandSeverity()
@@ -181,9 +181,9 @@ public class Inmate : PersonDecorator
         return contribandSeverity;
     }
 
-    public void SetContrabandSeverity(int _contrabandSeverity)
+    public void SetContrabandSeverity()
     {
-        if (hasContraband) contribandSeverity = _contrabandSeverity;
+        if (hasContraband) contribandSeverity = Random.Range(1, 100);
         else contribandSeverity = 0;
     }
 }

@@ -10,10 +10,46 @@ public enum PersonType
 }
 public class Person : MonoBehaviour
 {
+
+    public PersonType personType;
+
+    private IPerson decoratedPerson;
+
+    // Base data (optional - can come from ScriptableObject, JSON, etc.)
+    public string personName = "Alex";
+    public int age = 30;
+    public int health = 100;
+    public int hunger = 0;
     // Start is called before the first frame update
     void Start()
     {
-        
+        PersonBase basePerson = new PersonBase()
+        {
+            name = personName,
+            age = age,
+            health = health,
+            hunger = hunger
+        };
+
+        // Step 2: Decorate based on role
+        switch (personType)
+        {
+            case PersonType.Guard:
+                decoratedPerson = new Guard(basePerson);
+                break;
+            case PersonType.Medical:
+                decoratedPerson = new Doctor(basePerson);
+                break;
+            case PersonType.Inmate:
+                decoratedPerson = new Inmate(basePerson);
+                break;
+            default:
+                decoratedPerson = basePerson;
+                break;
+        }
+
+        // Step 3: Use the composed object
+        decoratedPerson.Describe();
     }
 
     // Update is called once per frame
@@ -30,9 +66,25 @@ public interface IPerson
 
 public class PersonBase : IPerson
 {
+    public int health { get; set; }
+    public string name { get; set; }
+
+    public int hunger { get; set; }
+
+    public int age { get; set; }
+
+
     public virtual void Describe()
     {
         Debug.Log("I am a person");
+    }
+    public void HealthCheck()
+    {
+        Debug.Log(health);
+    }
+    public void NameCheck()
+    {
+        Debug.Log(name);
     }
 }
 
@@ -75,5 +127,63 @@ public class Guard : PersonDecorator
     public void EscortInmate()
     {
         Debug.Log("Inmate escorted to needed location.");
+    }
+
+}
+
+public class Inmate : PersonDecorator
+{
+    public int prisonSentece;
+
+    public bool hasContraband;
+    public int contribandSeverity;
+    public Inmate(IPerson person) : base(person) { }
+
+    public override void Describe()
+    {
+        base.Describe();
+        Debug.Log("I am also an inmate");
+    }
+    public void ReduceSentence(int _sentenceAmount)
+    {
+        prisonSentece -= _sentenceAmount;
+        Debug.Log("Inmate sentence reduced.");
+    }
+    public void IncreaceSentence(int _sentenceAmount)
+    {
+        prisonSentece += _sentenceAmount;
+        Debug.Log("Inmate sentence increased.");
+    }
+    public void FightInamte()
+    {
+
+    }
+    public int GetPrisonSentece()
+    {
+        return prisonSentece;
+    }
+    public void SetPrisonSentence(int _sentenceAmount)
+    {
+        prisonSentece = _sentenceAmount;
+    }
+
+    public bool GetHasContraband()
+    {
+        return hasContraband;
+    }
+    public void SetHasContraband(bool _hasContraband)
+    {
+        hasContraband = _hasContraband;
+    }
+
+    public int GetContrabandSeverity()
+    {
+        return contribandSeverity;
+    }
+
+    public void SetContrabandSeverity(int _contrabandSeverity)
+    {
+        if (hasContraband) contribandSeverity = _contrabandSeverity;
+        else contribandSeverity = 0;
     }
 }

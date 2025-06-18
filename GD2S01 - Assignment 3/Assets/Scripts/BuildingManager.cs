@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [System.Serializable]
-public struct BuildingOption
+public struct BuildingOption //Building Option Tells The Factory And Building Manager About The Building To Create
 {
     public string name;
     public Sprite icon;
@@ -11,6 +11,25 @@ public struct BuildingOption
 
     public GameObject prefab;
 }
+
+
+//Building Factory Is Used To Create The Buildings In The Game
+public static class BuildingFactory
+{
+    public static GameObject CreateBuilding(BuildingOption _buildingOption, Vector3 position)
+    {
+        GameObject buildingInstance = GameObject.Instantiate(_buildingOption.prefab, position, Quaternion.identity);
+
+        if(buildingInstance.TryGetComponent<BuildingClass>(out var building))
+        {
+            building.Init();
+        }
+
+        return buildingInstance;
+    }
+}
+
+
 
 public class BuildingManager : MonoBehaviour
 {
@@ -40,6 +59,11 @@ public class BuildingManager : MonoBehaviour
         active = _state;
     }
 
+    public bool GetActiveState()
+    {
+        return active;
+    }
+
     private void Update()
     {
         //Only Place Buildings If The Mouse Pointer is Not Over UI Elements
@@ -60,7 +84,7 @@ public class BuildingManager : MonoBehaviour
     //Placed Building At A Position And Debugs To The Screen
     public void PlaceBuilding(BuildingOption _building, Vector3 _position)
     {
-        GameObject cur = Instantiate(_building.prefab, _position, Quaternion.identity);
+        GameObject cur = BuildingFactory.CreateBuilding(_building, _position);
 
         OnScreenDebugger.DebugMessage($"Placed New Building At Position {_position}");
     }

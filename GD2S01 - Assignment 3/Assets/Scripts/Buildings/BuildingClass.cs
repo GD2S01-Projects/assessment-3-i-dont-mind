@@ -10,6 +10,12 @@ public class BuildingClass : MonoBehaviour
     public int buildingMaxHousedPeople;
     public int buildingCurrentHousedPeople;
 
+
+    public void Init()
+    {
+        OnScreenDebugger.DebugMessage($"Initialised {buildingName}");
+    }
+
     // Start is called before the first frame update
     void Start()
     {

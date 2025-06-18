@@ -114,6 +114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1074187885392208780}
+  - component: {fileID: 5460984404713263306}
   m_Layer: 0
   m_Name: Building2
   m_TagString: Untagged
@@ -137,3 +138,19 @@ Transform:
   - {fileID: 7887307343755103964}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5460984404713263306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8874202476027941140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c694c072506824293de1c613149095, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingName: Cafetaria
+  buildingCost: 100
+  buildingMaxHousedPeople: 40
+  buildingCurrentHousedPeople: 0

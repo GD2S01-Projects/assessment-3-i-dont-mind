@@ -19,6 +19,8 @@ public class BuildingManager : MonoBehaviour
     public BuildingOption[] buildings;
     public int selectedBuilding;
 
+    bool active;
+
     [Header("UI")]
     public GameObject buildingSelectionPrefab;
     public Transform buildingSelectionTransform;
@@ -33,10 +35,15 @@ public class BuildingManager : MonoBehaviour
         CreateUI();
     }
 
+    public void SetActiveState(bool _state)
+    {
+        active = _state;
+    }
+
     private void Update()
     {
         //Only Place Buildings If The Mouse Pointer is Not Over UI Elements
-        if(Input.GetMouseButtonDown(0) && !IsPointerOverUIElement())
+        if(Input.GetMouseButtonDown(0) && !IsPointerOverUIElement() && active)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 

@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
     {
         if (inmates.Count < 2)
         {
-            Debug.Log("Not enough inmates to start fight.");
+            OnScreenDebugger.DebugMessage("Not enough inmates to start fight.");
                 return;
         }
 
@@ -115,11 +115,11 @@ public class GameManager : MonoBehaviour
         Person doctor = doctors[Random.Range(0, doctors.Count)];
         if (doctor == null)
         {
-            Debug.Log("No doctors to heal patiens.");
+            OnScreenDebugger.DebugMessage("No doctors to heal patiens.");
         }
         if (patient == null)
         {
-            Debug.Log("No patients to be healed.");
+            OnScreenDebugger.DebugMessage("No patients to be healed.");
         }
         else
         {

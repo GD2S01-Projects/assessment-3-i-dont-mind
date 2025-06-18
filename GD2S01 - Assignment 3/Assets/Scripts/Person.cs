@@ -76,15 +76,15 @@ public class PersonBase : IPerson
 
     public virtual void Describe()
     {
-        Debug.Log("I am a person");
+        OnScreenDebugger.DebugMessage("I am a person");
     }
     public void HealthCheck()
     {
-        Debug.Log(health);
+        OnScreenDebugger.DebugMessage(health.ToString());
     }
     public void NameCheck()
     {
-        Debug.Log(name);
+        OnScreenDebugger.DebugMessage(name);
     }
 }
 
@@ -108,12 +108,12 @@ public class Doctor : PersonDecorator
     public override void Describe()
     {
         base.Describe();
-        Debug.Log("I am also a doctor.");
+        OnScreenDebugger.DebugMessage("I am also a doctor.");
     }
     public void HealPatient(Person _person)
     {
         _person.health = 100;
-        Debug.Log("Healed a patient and sent back.");
+        OnScreenDebugger.DebugMessage("Healed a patient and sent back.");
     }
 }
 
@@ -123,11 +123,11 @@ public class Guard : PersonDecorator
     public override void Describe()
     {
         base.Describe();
-        Debug.Log("I am also a guard.");
+        OnScreenDebugger.DebugMessage("I am also a guard.");
     }
     public void EscortInmate()
     {
-        Debug.Log("Inmate escorted to needed location.");
+        OnScreenDebugger.DebugMessage("Inmate escorted to needed location.");
     }
 
 }
@@ -143,17 +143,17 @@ public class Inmate : PersonDecorator
     public override void Describe()
     {
         base.Describe();
-        Debug.Log("I am also an inmate");
+        OnScreenDebugger.DebugMessage("I am also an inmate");
     }
     public void ReduceSentence(int _sentenceAmount)
     {
         prisonSentece -= _sentenceAmount;
-        Debug.Log("Inmate sentence reduced.");
+        OnScreenDebugger.DebugMessage("Inmate sentence reduced.");
     }
     public void IncreaceSentence(int _sentenceAmount)
     {
         prisonSentece += _sentenceAmount;
-        Debug.Log("Inmate sentence increased.");
+        OnScreenDebugger.DebugMessage("Inmate sentence increased.");
     }
     public void FightInmate(Person _person)
     {

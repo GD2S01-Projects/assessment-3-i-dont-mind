@@ -59,6 +59,11 @@ public class BuildingManager : MonoBehaviour
         active = _state;
     }
 
+    public bool GetActiveState()
+    {
+        return active;
+    }
+
     private void Update()
     {
         //Only Place Buildings If The Mouse Pointer is Not Over UI Elements

@@ -115,7 +115,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1074187885392208780}
   - component: {fileID: 7533481175529523658}
-  - component: {fileID: 1046671775054866508}
   m_Layer: 0
   m_Name: Building
   m_TagString: Untagged
@@ -154,20 +153,4 @@ MonoBehaviour:
   buildingName: Cell Block
   buildingCost: 100
   buildingMaxHousedPeople: 40
-  buildingCanSleepIn: 1
---- !u!114 &1046671775054866508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8874202476027941140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0c694c072506824293de1c613149095, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buildingName: Caffateria
-  buildingCost: 200
-  buildingMaxHousedPeople: 120
-  buildingCanSleepIn: 0
+  buildingCurrentHousedPeople: 0

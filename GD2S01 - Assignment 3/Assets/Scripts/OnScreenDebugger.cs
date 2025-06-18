@@ -8,18 +8,19 @@ public class OnScreenDebugger : MonoBehaviour
     public int maxMessages;
     public GameObject debugMessagePrefab;
 
-    int messageCount;
+    static int messageCount;
 
     private void Awake()
     {
         Instance = this;
     }
 
+    //Debugs A Logged Message To The On-Screen Debugger
     public static void DebugMessage(string _message)
     {
         GameObject newMessage = Instantiate(Instance.debugMessagePrefab, Instance.verticalLayoutGroup.transform);
-        newMessage.GetComponent<Text>().text = $"[{Instance.messageCount}] {_message}";
-        Instance.messageCount++;
+        newMessage.GetComponent<Text>().text = $"[{messageCount}] {_message}";
+        messageCount++;
 
         if(Instance.verticalLayoutGroup.transform.childCount >= Instance.maxMessages)
         {
@@ -27,11 +28,18 @@ public class OnScreenDebugger : MonoBehaviour
         }
     }
 
-    private void Update()
+    //Debugs A Logged Message To The On-Screen Debugger With A Custom Color 
+    public static void DebugMessage(string _message, Color _color)
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        GameObject newMessage = Instantiate(Instance.debugMessagePrefab, Instance.verticalLayoutGroup.transform);
+        newMessage.GetComponent<Text>().text = $"[{messageCount}] {_message}";
+        newMessage.GetComponent<Text>().color = _color;
+
+        messageCount++;
+
+        if (Instance.verticalLayoutGroup.transform.childCount >= Instance.maxMessages)
         {
-            DebugMessage($"Testing Testing!");
+            Destroy(Instance.verticalLayoutGroup.transform.GetChild(0).gameObject);
         }
     }
 }

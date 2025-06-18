@@ -13,7 +13,7 @@ public class Person : MonoBehaviour
 
     public PersonType personType;
 
-    private IPerson decoratedPerson;
+    public IPerson decoratedPerson;
 
     // Base data (optional - can come from ScriptableObject, JSON, etc.)
     public string personName = "Alex";
@@ -110,8 +110,9 @@ public class Doctor : PersonDecorator
         base.Describe();
         Debug.Log("I am also a doctor.");
     }
-    public void HealPatient()
+    public void HealPatient(Person _person)
     {
+        _person.health = 100;
         Debug.Log("Healed a patient and sent back.");
     }
 }
@@ -154,9 +155,12 @@ public class Inmate : PersonDecorator
         prisonSentece += _sentenceAmount;
         Debug.Log("Inmate sentence increased.");
     }
-    public void FightInamte()
+    public void FightInmate(Person _person)
     {
-
+        if (_person.decoratedPerson is Inmate inmate)
+        {
+            _person.health -= 20;
+        }
     }
     public int GetPrisonSentece()
     {

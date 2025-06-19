@@ -76,7 +76,7 @@ public class PersonBase : IPerson
 
     public virtual void Describe()
     {
-        Debug.Log("I am a person");
+        OnScreenDebugger.DebugMessage("I am a person");
     }
     public void HealthCheck()
     {
@@ -108,12 +108,12 @@ public class Doctor : PersonDecorator
     public override void Describe()
     {
         base.Describe();
-        Debug.Log("I am also a doctor.");
+        OnScreenDebugger.DebugMessage("I am also a doctor.");
     }
     public void HealPatient(Person _person)
     {
         _person.health = 100;
-        Debug.Log("Healed a patient and sent back.");
+        OnScreenDebugger.DebugMessage("Healed a patient and sent back.");
     }
 }
 
@@ -123,37 +123,38 @@ public class Guard : PersonDecorator
     public override void Describe()
     {
         base.Describe();
-        Debug.Log("I am also a guard.");
+        OnScreenDebugger.DebugMessage("I am also a guard.");
     }
     public void EscortInmate()
     {
-        Debug.Log("Inmate escorted to needed location.");
+        OnScreenDebugger.DebugMessage("Inmate escorted to needed location.");
     }
 
 }
 
 public class Inmate : PersonDecorator
 {
-    public int prisonSentece;
+    public int prisonSentence;
 
     public bool hasContraband;
     public int contribandSeverity;
+    public int prisonerValue = 25;
     public Inmate(IPerson person) : base(person) { }
 
     public override void Describe()
     {
         base.Describe();
-        Debug.Log("I am also an inmate");
+        OnScreenDebugger.DebugMessage("I am also an inmate");
     }
     public void ReduceSentence(int _sentenceAmount)
     {
-        prisonSentece -= _sentenceAmount;
-        Debug.Log("Inmate sentence reduced.");
+        prisonSentence -= _sentenceAmount;
+        OnScreenDebugger.DebugMessage("Inmate sentence reduced.");
     }
     public void IncreaceSentence(int _sentenceAmount)
     {
-        prisonSentece += _sentenceAmount;
-        Debug.Log("Inmate sentence increased.");
+        prisonSentence += _sentenceAmount;
+        OnScreenDebugger.DebugMessage("Inmate sentence increased.");
     }
     public void FightInmate(Person _person)
     {
@@ -164,11 +165,11 @@ public class Inmate : PersonDecorator
     }
     public int GetPrisonSentece()
     {
-        return prisonSentece;
+        return prisonSentence;
     }
     public void SetPrisonSentence(int _sentenceAmount)
     {
-        prisonSentece = _sentenceAmount;
+        prisonSentence = _sentenceAmount;
     }
 
     public bool GetHasContraband()

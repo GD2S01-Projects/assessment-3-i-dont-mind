@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public GameObject personPrefab;
     public Transform spawnLocation;
+    public int money;
+
+    float incomeTimer;
 
     public List<Person> people = new List<Person>();
     public List<Person> injuredPeople = new List<Person>();
@@ -14,18 +17,33 @@ public class GameManager : MonoBehaviour
     public List<Person> inmates = new List<Person>();
     public List<Person> guards = new List<Person>();
     public List<Person> doctors = new List<Person>();
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         Instance = this;
+    }
+
+    void Start()
+    {
         StartCoroutine(StartFightChance());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        incomeTimer -= Time.deltaTime;
+        if(incomeTimer <= 0f)
+        {
+            int incomeTally = inmates.Count * 25;
+
+            OnScreenDebugger.DebugMessage($"Giving Player ${incomeTally} For Prisoner Income");
+
+            AddIncome(incomeTally);
+
+            incomeTimer = 30f;
+        }
     }
+
     public void RegisterPerson(Person _person)
     {
         people.Add(_person);
@@ -35,6 +53,27 @@ public class GameManager : MonoBehaviour
         if (_person.decoratedPerson is Doctor) { doctors.Add(_person); }
     }
 
+
+    //Returns false if its possible to spend that money
+    public bool SpendMoney(int _amount)
+    {
+        if(money - _amount < 0)
+        {
+            return false;
+        }
+
+        OnScreenDebugger.DebugMessage($"Spent ${_amount}");
+
+        money -= _amount;
+        return true;
+    }
+
+    //Adds Income To The Player Money
+    public void AddIncome(int _amount)
+    {
+        money += _amount;
+    }
+
     public void SpawnInmate()
     {
         GameObject inmateObject = Instantiate(personPrefab, spawnLocation.position, Quaternion.identity);
@@ -42,7 +81,7 @@ public class GameManager : MonoBehaviour
         Person personScript = inmateObject.GetComponent<Person>();
         personScript.personType = PersonType.Inmate;
 
-        personScript.personName = "Inamte " + Random.Range(1000, 9999);
+        personScript.personName = "Inmate " + Random.Range(1000, 9999);
         personScript.age = Random.Range(18, 80);
         personScript.health = 100;
         personScript.hunger = 0;
@@ -84,7 +123,7 @@ public class GameManager : MonoBehaviour
     {
         if (inmates.Count < 2)
         {
-            Debug.Log("Not enough inmates to start fight.");
+            OnScreenDebugger.DebugMessage("Not enough inmates to start fight.");
                 return;
         }
 

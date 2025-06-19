@@ -19,7 +19,6 @@ public struct BuildingOption //Building Option Tells The Factory And Building Ma
 {
     public string name;
     public Sprite icon;
-    public int cost;
 
     public GameObject prefab;
 }
@@ -90,7 +89,12 @@ public class BuildingManager : MonoBehaviour
             RaycastHit hit;
             Physics.Raycast(ray, out hit, Mathf.Infinity);
 
-            if(hit.transform != null)
+            //Only Place If Ther Player Has Enough Money
+
+            int cost = buildings[selectedBuilding].prefab.GetComponent<BuildingClass>().buildingCost;
+            bool hasEnoughMoney = GameManager.Instance.SpendMoney(cost);
+
+            if (hit.transform != null && hasEnoughMoney)
             {
                 PlaceBuilding(buildings[selectedBuilding], hit.point);
             }

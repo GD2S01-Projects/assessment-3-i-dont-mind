@@ -1,5 +1,19 @@
+/*
+Bachelor of Software Engineering
+Media Design School
+Auckland
+New Zealand
+(c) 2025 Media Design School
+File Name : GameManager.cs
+Description : Game manager that manags the players as well as their functions
+Author : Reece Smith
+Mail : reece.smtih@mds.ac.nz
+*/
+
+
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     public List<Person> people = new List<Person>();
     public List<Person> injuredPeople = new List<Person>();
+    public List<GameObject> inmatePrefabInstances = new List<GameObject>();
 
     public List<Person> inmates = new List<Person>();
     public List<Person> guards = new List<Person>();
@@ -17,21 +32,23 @@ public class GameManager : MonoBehaviour
     public BoxCollider spawnSquare;
     public int maxPeople = 20;
     // Start is called before the first frame update
-    void Start()
+    void Start() // starts coroutines for spawning people, fighting, searchging for contraband and setting contraband and healing patients and reduce inmate sentence
     {
         Instance = this;
         StartCoroutine(StartFightChance());
         StartCoroutine(SpawnPersonChance());
         StartCoroutine(SearchInmateChance());
         StartCoroutine(SetContrabandChance());
+        StartCoroutine(HealPatienChance());
+        StartCoroutine(ReduceInmateSentenceCoRoutine());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
-    public void RegisterPerson(Person _person)
+    public void RegisterPerson(Person _person) // regitering a person to the people lists
     {
         people.Add(_person);
 
@@ -40,7 +57,7 @@ public class GameManager : MonoBehaviour
         if (_person.decoratedPerson is Doctor) { doctors.Add(_person); }
     }
 
-    public void SpawnInmate()
+    public void SpawnInmate() // spawning an inmate in a defined area and setting its variables randomly
     {
 
         Bounds spawnBoxBounds = spawnSquare.bounds;
@@ -60,13 +77,13 @@ public class GameManager : MonoBehaviour
         personScript.hunger = 0;
         if (personScript.decoratedPerson is Inmate inmate)
         {
-            inmate.SetPrisonSentence(Random.Range(1, 100));
+            inmate.SetPrisonSentence(Random.Range(20, 100));
             inmate.SetHasContraband();
             inmate.SetContrabandSeverity();
         }
-
+        inmatePrefabInstances.Add(inmateObject);
     }
-    public void SpawnGuard()
+    public void SpawnGuard() // spawning a guard and setting its vallues randomly
     {
         Bounds spawnBoxBounds = spawnSquare.bounds;
 
@@ -86,7 +103,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void SpawnDoctor()
+    public void SpawnDoctor() // spawning a doctor and setting its vallues randomly
     {
         Bounds spawnBoxBounds = spawnSquare.bounds;
 
@@ -106,7 +123,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void SpawnPerson()
+    public void SpawnPerson() // chooses what type of person to spawn
     {
         int personTypeIndex = Random.Range(0, 100);
         if (personTypeIndex < 33)
@@ -123,7 +140,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void StartInmateFight()
+    private void StartInmateFight() // try start a fight between 2 inmates, if there are not enough inmates to start a fight then send debug message
     {
         if (inmates.Count < 2)
         {
@@ -152,7 +169,7 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void CheckInjured()
+    public void CheckInjured() // checks if there are injured people, and hela them
     {
         if (injuredPeople.Count == 0)
         {
@@ -183,7 +200,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void CheckForContraband()
+    public void CheckForContraband() // checks for inmates and searches them for contraband
     {
         if (inmates.Count == 0)
         {
@@ -217,7 +234,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetContraband()
+    public void SetContraband() // chooses and inmate and sets the contraband for them
     {
         if (inmates.Count == 0)
         {
@@ -245,7 +262,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public IEnumerator StartFightChance()
+    public void InmateReduceSentence() // reduces all inmates sentence by 1, if the sentece is finished, removes from list and destroy prefab instance
+    {
+        if (inmates.Count > 0)
+        {
+            for (int i = 0; i < inmates.Count; i++)
+            {
+                if (inmates[i].decoratedPerson is Inmate inmate)
+                {
+                    inmate.ReduceSentence(1);
+                    if (inmate.GetPrisonSentece() <= 0)
+                    {
+                        GameObject.Destroy(inmatePrefabInstances[i]);
+                        inmates.Remove(inmates[i]);
+                        people.Remove(people[i]);
+                        Destroy(people[i].gameObject);
+                    }
+                }
+            }
+        }
+    }
+
+    public IEnumerator StartFightChance() // chance every second to call fight function
     {
         while (true)
         {
@@ -260,7 +298,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public IEnumerator SpawnPersonChance()
+    public IEnumerator SpawnPersonChance() // chance every second to call spawn person function
     {
         while (true)
         {
@@ -273,7 +311,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public IEnumerator SearchInmateChance()
+    public IEnumerator SearchInmateChance() // chance every second to call check for contraband function
     {
         while (true)
         {
@@ -286,7 +324,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public IEnumerator SetContrabandChance()
+    public IEnumerator SetContrabandChance() // chance every second to call set contraband function
     {
         while (true)
         {
@@ -299,4 +337,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public IEnumerator HealPatienChance() // chance every second to call checked on injured function
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            float chance = Random.value;
+            if (chance <= 0.5)
+            {
+                CheckInjured();
+            }
+        }
+    }
+
+    public IEnumerator ReduceInmateSentenceCoRoutine() // while running runs the inmate reduce sentence every second.
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            InmateReduceSentence();
+        }
+    }
 }

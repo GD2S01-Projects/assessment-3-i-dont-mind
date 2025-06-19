@@ -122,6 +122,81 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &19119557
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 19119560}
+  - component: {fileID: 19119559}
+  - component: {fileID: 19119558}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &19119558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19119557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abffa42defa837409d43084ff3bfc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  personPrefab: {fileID: 5083200847784931949, guid: 5c65a0be702bc7b4b8116f0d21636cc2, type: 3}
+  spawnLocation: {x: 0, y: 0, z: 0}
+  people: []
+  injuredPeople: []
+  inmates: []
+  guards: []
+  doctors: []
+  spawnSquare: {fileID: 449982640}
+  maxPeople: 20
+--- !u!114 &19119559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19119557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abffa42defa837409d43084ff3bfc83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  personPrefab: {fileID: 5083200847784931949, guid: 5c65a0be702bc7b4b8116f0d21636cc2, type: 3}
+  spawnLocation: {x: 0, y: 0, z: 0}
+  people: []
+  injuredPeople: []
+  inmates: []
+  guards: []
+  doctors: []
+  spawnSquare: {fileID: 0}
+  maxPeople: 20
+--- !u!4 &19119560
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19119557}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.4395771, y: -6.83876, z: 3.71091}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &79237406 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3631390683054784766, guid: de2a773f6208faa47b797137bc092e52, type: 3}

@@ -125,9 +125,38 @@ public class Guard : PersonDecorator
         base.Describe();
         OnScreenDebugger.DebugMessage("I am also a guard.");
     }
-    public void EscortInmate()
+    public void CheckContraband(Person _person)
     {
-        OnScreenDebugger.DebugMessage("Inmate escorted to needed location.");
+        if (_person.decoratedPerson is Inmate inmate)
+        {
+            if (inmate.hasContraband)
+            {
+
+                OnScreenDebugger.DebugMessage("Inmate has contraband");
+                if (inmate.contribandSeverity < 33)
+                {
+                    inmate.IncreaceSentence(5);
+                    OnScreenDebugger.DebugMessage("Inmate increased sentence by 5 years.");
+                }
+                if (inmate.contribandSeverity > 33 &&  inmate.contribandSeverity < 66)
+                {
+                    inmate.IncreaceSentence(20);
+                    OnScreenDebugger.DebugMessage("Inmate increased sentence by 20 years.");
+                }
+                if (inmate.contribandSeverity > 66)
+                {
+                    inmate.IncreaceSentence(80);
+                    OnScreenDebugger.DebugMessage("Inmate increased sentence by 80 years.");
+                }
+                inmate.contribandSeverity = 0;
+                inmate.hasContraband = false;
+            }
+            else
+            {
+                return;
+            }
+        }
+        
     }
 
 }

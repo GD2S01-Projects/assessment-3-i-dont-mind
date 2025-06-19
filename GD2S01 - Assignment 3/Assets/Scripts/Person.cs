@@ -164,17 +164,19 @@ public class Guard : PersonDecorator // guard decorator with check contraband fu
                 return;
             }
         }
-        
+
+        OnScreenDebugger.DebugMessage("Inmate escorted to needed location.");
     }
 
 }
 
 public class Inmate : PersonDecorator // inmate decorator with inmate specific variable and functions for setting, getting, increaseing and decreasing its variables around sentence and contraband
 {
-    public int prisonSentece;
+    public int prisonSentence;
 
     public bool hasContraband;
     public int contribandSeverity;
+    public int prisonerValue = 25;
     public Inmate(IPerson person) : base(person) { }
 
     public override void Describe()
@@ -184,12 +186,14 @@ public class Inmate : PersonDecorator // inmate decorator with inmate specific v
     }
     public void ReduceSentence(int _sentenceAmount)
     {
-        prisonSentece -= _sentenceAmount;
+        prisonSentence -= _sentenceAmount;
+
         OnScreenDebugger.DebugMessage("Inmate sentence reduced.");
     }
+    
     public void IncreaceSentence(int _sentenceAmount)
     {
-        prisonSentece += _sentenceAmount;
+        prisonSentence += _sentenceAmount;
         OnScreenDebugger.DebugMessage("Inmate sentence increased.");
     }
     public void FightInmate(Person _person)
@@ -201,11 +205,11 @@ public class Inmate : PersonDecorator // inmate decorator with inmate specific v
     }
     public int GetPrisonSentece()
     {
-        return prisonSentece;
+        return prisonSentence;
     }
     public void SetPrisonSentence(int _sentenceAmount)
     {
-        prisonSentece = _sentenceAmount;
+        prisonSentence = _sentenceAmount;
     }
 
     public bool GetHasContraband()

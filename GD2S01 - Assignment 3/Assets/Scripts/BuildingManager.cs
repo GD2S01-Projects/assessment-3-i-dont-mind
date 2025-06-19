@@ -1,3 +1,15 @@
+/*
+Bachelor of Software Engineering
+Media Design School
+Auckland
+New Zealand
+(c) 2025 Media Design School
+File Name : BuildingManager.cs
+Description : Building Manager Handles All Logic To Be Able To Create Buildings Within The Game Environment
+Author : Joe Rickwood
+Mail : joe.rickwood@mds.ac.nz
+*/
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -44,21 +56,25 @@ public class BuildingManager : MonoBehaviour
     public GameObject buildingSelectionPrefab;
     public Transform buildingSelectionTransform;
 
-    private void Awake()
+    //Sets Static Instance So Other Objects Can use The Building Manager
+    private void Awake() 
     {
         Instance = this;
     }
 
-    private void Start()
+    //Creates The UI On the First Frame Of PLay
+    private void Start() 
     {
         CreateUI();
     }
 
+    //Sets Weather or Not Building Is Enabled
     public void SetActiveState(bool _state)
     {
         active = _state;
     }
 
+    //Gets Weather Or Not Building Is Enabled
     public bool GetActiveState()
     {
         return active;
@@ -89,12 +105,29 @@ public class BuildingManager : MonoBehaviour
         OnScreenDebugger.DebugMessage($"Placed New Building At Position {_position}");
     }
 
+    //Placed Building At A Position Using A String As Type Input And Debugs To The Screen
+    public void PlaceBuilding(string _buildingString, Vector3 _position)
+    {
+        for (int i = 0; i < buildings.Length; i++)
+        {
+            if (buildings[i].name == _buildingString)
+            {
+                GameObject cur = BuildingFactory.CreateBuilding(buildings[i], _position);
 
+                OnScreenDebugger.DebugMessage($"Placed New Building At Position {_position}");
+
+                return;
+            }
+        }
+    }
+
+    //Used To Select Which Building To Place Down
     public void SetSelectedBuildingOption(int _option)
     {
         selectedBuilding = _option;
     }
 
+    //Creates The Building Manager User Interface
     public void CreateUI()
     {
         //Clear Previous UI
@@ -112,13 +145,12 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
+    //Checks If The Users Cursor Is Over Any User Interface, 
+    //Helpful in order to check if the building manager should build something there or not
     public bool IsPointerOverUIElement()
     {
-        return IsPointerOverUIElement(GetEventSystemRaycastResults());
-    }
+        List<RaycastResult> eventSystemRaysastResults = GetEventSystemRaycastResults();
 
-    private bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults)
-    {
         for (int index = 0; index < eventSystemRaysastResults.Count; ++index)
         {
             RaycastResult curRaysastResult = eventSystemRaysastResults[index];
@@ -133,6 +165,7 @@ public class BuildingManager : MonoBehaviour
         return false;
     }
 
+    //Gets The Current List Of Raycast results From The Mouse Cursor Onto UI Objects
     static List<RaycastResult> GetEventSystemRaycastResults()
     {
         PointerEventData eventData = new PointerEventData(EventSystem.current);

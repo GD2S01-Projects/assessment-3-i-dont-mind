@@ -1,3 +1,16 @@
+/*
+Bachelor of Software Engineering
+Media Design School
+Auckland
+New Zealand
+(c) 2025 Media Design School
+File Name : OnScreenDebugger.cs
+Description : Contains the implementation to be able to debug onscreen messages onto the unity screen environment
+Author : Joe Rickwood
+Mail : joe.rickwood@mds.ac.nz
+*/
+
+
 using UnityEngine;
 using UnityEngine.UI;
 

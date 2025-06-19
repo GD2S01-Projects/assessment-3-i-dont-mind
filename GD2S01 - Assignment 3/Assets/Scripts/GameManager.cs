@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public GameObject personPrefab;
     public Vector3 spawnLocation;
-    public Transform spawnLocation;
+
     public int money;
 
     float incomeTimer;
